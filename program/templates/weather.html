@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Weather Dashboard - Thailand{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>Thailand Weather</h2>
+    <form method="POST" action="{{ url_for('weather') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="city">Select a City</label>
+            <select id="city" name="city" required>
+                <option value="">-- Choose a city --</option>
+                {% for city in cities %}
+                    <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn">Get Weather</button>
+    </form>
+</div>
+
+{% if weather_data %}
+<div class="card" style="margin-top:1.5rem;">
+    {% if weather_data.demo %}
+        <div class="flash warning">Demo mode - set WEATHER_API_KEY env variable for live data.</div>
+    {% endif %}
+    <div style="text-align:center;">
+        <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png"
+             alt="{{ weather_data.description }}" style="width:80px; height:80px;">
+        <h2 style="font-size:2rem; color:#fff;">{{ weather_data.temp }}&deg;C</h2>
+        <p style="font-size:1.1rem; opacity:0.8;">{{ weather_data.description }}</p>
+        <p style="margin-top:0.3rem; opacity:0.6;">{{ weather_data.city }}, {{ weather_data.country }}</p>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-top:1.5rem; text-align:center;">
+        <div>
+            <div style="opacity:0.6; font-size:0.85rem;">Feels Like</div>
+            <div style="font-size:1.3rem; font-weight:700;">{{ weather_data.feels_like }}&deg;C</div>
+        </div>
+        <div>
+            <div style="opacity:0.6; font-size:0.85rem;">Humidity</div>
+            <div style="font-size:1.3rem; font-weight:700;">{{ weather_data.humidity }}%</div>
+        </div>
+        <div>
+            <div style="opacity:0.6; font-size:0.85rem;">Wind</div>
+            <div style="font-size:1.3rem; font-weight:700;">{{ weather_data.wind_speed }} m/s</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

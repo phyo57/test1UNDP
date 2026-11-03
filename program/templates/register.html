@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Register - Thailand Weather{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>Register</h2>
+    <p style="text-align:center; margin-bottom:1.5rem; opacity:0.7;">Create your account with a unique 4-digit ID</p>
+    <form method="POST" action="{{ url_for('register') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="user_id">Choose a 4-Digit ID</label>
+            <input type="text" id="user_id" name="user_id" maxlength="4" pattern="\d{4}"
+                   placeholder="e.g. 1234" value="{{ user_id|default('') }}" required autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" maxlength="100"
+                   placeholder="Your name" value="{{ name|default('') }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" maxlength="254"
+                   placeholder="you@example.com" value="{{ email|default('') }}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password (min 8 characters)</label>
+            <input type="password" id="password" name="password" required minlength="8">
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required minlength="8">
+        </div>
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <div class="link-text">
+        Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </div>
+</div>
+{% endblock %}
